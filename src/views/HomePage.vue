@@ -80,12 +80,12 @@ ion-item {
   <!-- komponen utama di antara 2 komponen ini -->
   <!-- bagian refresher -->
 
-<!-- active todos -->
+<!-- active katalogs -->
 <div class="scrollable-container">
   <ion-list>
-    <ion-item-sliding v-for="todo in activeTodos" :key="todo.id" :ref="(el) => setItemRef(el, todo.id!)">
-      <ion-item-options side="start" @ionSwipe="handleDelete(todo)">
-        <ion-item-option color="danger" expandable @click="handleDelete(todo)">
+    <ion-item-sliding v-for="katalog in activekatalogs" :key="katalog.id" :ref="(el) => setItemRef(el, katalog.id!)">
+      <ion-item-options side="start" @ionSwipe="handleDelete(katalog)">
+        <ion-item-option color="danger" expandable @click="handleDelete(katalog)">
           <ion-icon slot="icon-only" :icon="trash" size="large"></ion-icon>
         </ion-item-option>
       </ion-item-options>
@@ -93,32 +93,32 @@ ion-item {
       <ion-item>
         <ion-card>
           <ion-card-header>
-            <ion-card-title class="ion-text-wrap limited-text">{{ todo.title }}</ion-card-title>
-            <ion-card-subtitle class="limited-text">{{ todo.description }}</ion-card-subtitle>
+            <ion-card-title class="ion-text-wrap limited-text">{{ katalog.title }}</ion-card-title>
+            <ion-card-subtitle class="limited-text">{{ katalog.description }}</ion-card-subtitle>
           </ion-card-header>
 
           <ion-card-content>
-            <ion-badge>{{ getRelativeTime(todo.updatedAt) }}</ion-badge>
+            <ion-badge>{{ getRelativeTime(katalog.updatedAt) }}</ion-badge>
           </ion-card-content>
         </ion-card>
       </ion-item>
 
-      <ion-item-options side="end" @ionSwipe="handleStatus(todo)">
-        <ion-item-option @click="handleEdit(todo)">
+      <ion-item-options side="end" @ionSwipe="handleStatus(katalog)">
+        <ion-item-option @click="handleEdit(katalog)">
           <ion-icon slot="icon-only" :icon="create" size="large"></ion-icon>
         </ion-item-option>
-        <ion-item-option color="success" expandable @click="handleStatus(todo)">
+        <ion-item-option color="success" expandable @click="handleStatus(katalog)">
           <ion-icon slot="icon-only" :icon="checkmarkCircle" color="light" size="large"></ion-icon>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
-    <ion-item v-if="activeTodos.length === 0" class="ion-text-center">
-      <ion-label>No active todos</ion-label>
+    <ion-item v-if="activekatalogs.length === 0" class="ion-text-center">
+      <ion-label>No active katalogs</ion-label>
     </ion-item>
   </ion-list>
 </div>
 
-<!-- completed todos -->
+<!-- completed katalogs -->
 <ion-item class="accordion-container">
   <ion-accordion-group>
     <ion-accordion value="first">
@@ -127,9 +127,9 @@ ion-item {
       </ion-item>
       <div slot="content" class="scrollable-container">
         <ion-list>
-          <ion-item-sliding v-for="todo in completedTodos" :key="todo.id" :ref="(el) => setItemRef(el, todo.id!)">
-            <ion-item-options side="start" @ionSwipe="handleDelete(todo)">
-              <ion-item-option color="danger" expandable @click="handleDelete(todo)">
+          <ion-item-sliding v-for="katalog in completedkatalogs" :key="katalog.id" :ref="(el) => setItemRef(el, katalog.id!)">
+            <ion-item-options side="start" @ionSwipe="handleDelete(katalog)">
+              <ion-item-option color="danger" expandable @click="handleDelete(katalog)">
                 <ion-icon slot="icon-only" :icon="trash" size="large"></ion-icon>
               </ion-item-option>
             </ion-item-options>
@@ -137,27 +137,27 @@ ion-item {
             <ion-item>
               <ion-card>
                 <ion-card-header>
-                  <ion-card-title class="ion-text-wrap limited-text">{{ todo.title }}</ion-card-title>
-                  <ion-card-subtitle class="limited-text">{{ todo.description }}</ion-card-subtitle>
+                  <ion-card-title class="ion-text-wrap limited-text">{{ katalog.title }}</ion-card-title>
+                  <ion-card-subtitle class="limited-text">{{ katalog.description }}</ion-card-subtitle>
                 </ion-card-header>
 
                 <ion-card-content>
-                  <ion-badge>{{ getRelativeTime(todo.updatedAt) }}</ion-badge>
+                  <ion-badge>{{ getRelativeTime(katalog.updatedAt) }}</ion-badge>
                 </ion-card-content>
               </ion-card>
             </ion-item>
 
-            <ion-item-options side="end" @ionSwipe="handleStatus(todo)">
-              <ion-item-option @click="handleEdit(todo)">
+            <ion-item-options side="end" @ionSwipe="handleStatus(katalog)">
+              <ion-item-option @click="handleEdit(katalog)">
                 <ion-icon slot="icon-only" :icon="create" size="large"></ion-icon>
               </ion-item-option>
-              <ion-item-option color="warning" expandable @click="handleStatus(todo)">
+              <ion-item-option color="warning" expandable @click="handleStatus(katalog)">
                 <ion-icon slot="icon-only" :icon="close" color="light" size="large"></ion-icon>
               </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
-          <ion-item v-if="completedTodos.length === 0" class="ion-text-center">
-            <ion-label>No completed todos</ion-label>
+          <ion-item v-if="completedkatalogs.length === 0" class="ion-text-center">
+            <ion-label>No completed katalogs</ion-label>
           </ion-item>
         </ion-list>
       </div>
@@ -172,7 +172,7 @@ ion-item {
       <ion-icon :icon="add" size="large"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <InputModal v-model:isOpen="isOpen" v-model:editingId="editingId" :todo="todo" @submit="handleSubmit" />
+  <InputModal v-model:isOpen="isOpen" v-model:editingId="editingId" :katalog="katalog" @submit="handleSubmit" />
 </ion-content>
 
   </ion-page>
@@ -219,20 +219,20 @@ import {
 } from 'ionicons/icons';
 import InputModal from '@/components/InputModal.vue';
 import { onMounted, ref, computed, onUnmounted } from 'vue';
-import { firestoreService, type Todo } from '@/utils/firestore';
+import { firestoreService, type katalog } from '@/utils/firestore';
 import { formatDistanceToNow } from 'date-fns';
 
 // modifikasi src/views/HomePage.vue deklarasikan variabel yang akan digunakan
 // modifikasi src/views/HomePage.vue deklarasikan variabel yang akan digunakan
 const isOpen = ref(false);
 const editingId = ref<string | null>(null);
-const todos = ref<Todo[]>([]);
-const todo = ref<Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'status'>>({
+const katalogs = ref<katalog[]>([]);
+const katalog = ref<Omit<katalog, 'id' | 'createdAt' | 'updatedAt' | 'status'>>({
   title: '',
   description: '',
 });
-const activeTodos = computed(() => todos.value.filter(todo => !todo.status));
-const completedTodos = computed(() => todos.value.filter(todo => todo.status));
+const activekatalogs = computed(() => katalogs.value.filter(katalog => !katalog.status));
+const completedkatalogs = computed(() => katalogs.value.filter(katalog => katalog.status));
 const itemRefs = ref<Map<string, HTMLIonItemSlidingElement>>(new Map());
 let intervalId: any;
 const timeUpdateTrigger = ref(0);
@@ -271,7 +271,7 @@ const getRelativeTime = (date: any) => {
 // handle swipe refresher
 const handleRefresh = async (event: any) => {
   try {
-    await loadTodos(false);
+    await loadkatalogs(false);
   } catch (error) {
     console.error('Error refreshing:', error);
   } finally {
@@ -280,20 +280,20 @@ const handleRefresh = async (event: any) => {
 };
 
 // handle submit add/edit pada modal
-const handleSubmit = async (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => {
-  if (!todo.title) {
+const handleSubmit = async (katalog: Omit<katalog, 'id' | 'createdAt' | 'updatedAt' | 'status'>) => {
+  if (!katalog.title) {
     await showToast('Title is required', 'warning', warningOutline);
     return;
   }
   try {
     if (editingId.value) {
-      await firestoreService.updateTodo(editingId.value, todo as Todo);
-      await showToast('Todo updated successfully', 'success', checkmarkCircle);
+      await firestoreService.updatekatalog(editingId.value, katalog as katalog);
+      await showToast('katalog updated successfully', 'success', checkmarkCircle);
     } else {
-      await firestoreService.addTodo(todo as Todo);
-      await showToast('Todo added successfully', 'success', checkmarkCircle);
+      await firestoreService.addkatalog(katalog as katalog);
+      await showToast('katalog added successfully', 'success', checkmarkCircle);
     }
-    loadTodos();
+    loadkatalogs();
   } catch (error) {
     await showToast('An error occurred', 'danger', closeCircle);
     console.error(error);
@@ -303,7 +303,7 @@ const handleSubmit = async (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 
 };
 
 // load data
-const loadTodos = async (isLoading = true) => {
+const loadkatalogs = async (isLoading = true) => {
   let loading;
   if (isLoading) {
     loading = await loadingController.create({
@@ -313,7 +313,7 @@ const loadTodos = async (isLoading = true) => {
   }
 
   try {
-    todos.value = await firestoreService.getTodos();
+    katalogs.value = await firestoreService.getkatalogs();
   } catch (error) {
     console.error(error);
   } finally {
@@ -325,7 +325,7 @@ const loadTodos = async (isLoading = true) => {
 
 // dijalankan setiap halaman diload, load data dan set interval update 1 menit
 onMounted(() => {
-  loadTodos();
+  loadkatalogs();
   intervalId = setInterval(() => {
     timeUpdateTrigger.value++;
   }, 60000);
@@ -337,42 +337,42 @@ onUnmounted(() => {
 });
 
 // handle edit click
-const handleEdit = async (editTodo: Todo) => {
-  const slidingItem = itemRefs.value.get(editTodo.id!);
+const handleEdit = async (editkatalog: katalog) => {
+  const slidingItem = itemRefs.value.get(editkatalog.id!);
   await slidingItem?.close();
 
-  editingId.value = editTodo.id!;
-  todo.value = {
-    title: editTodo.title,
-    description: editTodo.description,
+  editingId.value = editkatalog.id!;
+  katalog.value = {
+    title: editkatalog.title,
+    description: editkatalog.description,
   }
   isOpen.value = true;
 }
 
 // handle delete click/swipe
-const handleDelete = async (deleteTodo: Todo) => {
+const handleDelete = async (deletekatalog: katalog) => {
   try {
-    await firestoreService.deleteTodo(deleteTodo.id!);
-    await showToast('Todo deleted successfully', 'success', checkmarkCircle);
-    loadTodos();
+    await firestoreService.deletekatalog(deletekatalog.id!);
+    await showToast('katalog deleted successfully', 'success', checkmarkCircle);
+    loadkatalogs();
   } catch (error) {
-    await showToast('Failed to delete todo', 'danger', closeCircle);
+    await showToast('Failed to delete katalog', 'danger', closeCircle);
     console.error(error);
   }
 };
 
-// handle status click/swipe, mengubah status todo active (false)/completed (true)
-const handleStatus = async (statusTodo: Todo) => {
-  const slidingItem = itemRefs.value.get(statusTodo.id!);
+// handle status click/swipe, mengubah status katalog active (false)/completed (true)
+const handleStatus = async (statuskatalog: katalog) => {
+  const slidingItem = itemRefs.value.get(statuskatalog.id!);
   await slidingItem?.close();
   try {
-    await firestoreService.updateStatus(statusTodo.id!, !statusTodo.status);
+    await firestoreService.updateStatus(statuskatalog.id!, !statuskatalog.status);
     await showToast(
-      `Todo marked as ${!statusTodo.status ? 'completed' : 'active'}`,
+      `katalog marked as ${!statuskatalog.status ? 'completed' : 'active'}`,
       'success',
       checkmarkCircle
     );
-    loadTodos();
+    loadkatalogs();
   } catch (error) {
     await showToast('Failed to update status', 'danger', closeCircle);
     console.error(error);

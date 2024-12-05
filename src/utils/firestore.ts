@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore';
 
 // interface data
-export interface Todo {
+export interface katalog {
     id?: string;
     title: string;
     description: string;
@@ -25,68 +25,68 @@ export interface Todo {
 // operasi CRUD
 export const firestoreService = {
     // get collection ref
-    getTodoRef() {
+    getkatalogRef() {
         const uid = auth.currentUser?.uid;
         if (!uid) throw new Error('User not authenticated');
-        return collection(db, 'users', uid, 'todos');
+        return collection(db, 'users', uid, 'katalogs');
     },
 
 		// create
-    async addTodo(todo: Omit<Todo, 'id'>) {
+    async addkatalog(katalog: Omit<katalog, 'id'>) {
         try {
-            const todoRef = this.getTodoRef();
-            const docRef = await addDoc(todoRef, {
-                ...todo,
+            const katalogRef = this.getkatalogRef();
+            const docRef = await addDoc(katalogRef, {
+                ...katalog,
                 status: false,
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now()
             });
             return docRef.id;
         } catch (error) {
-            console.error('Error Tambah Todo:', error);
+            console.error('Error Tambah katalog:', error);
             throw error;
         }
     },
 
 		// read
-    async getTodos(): Promise<Todo[]> {
+    async getkatalogs(): Promise<katalog[]> {
         try {
-            const todoRef = this.getTodoRef();
-            const q = query(todoRef, orderBy('updatedAt', 'desc'));
+            const katalogRef = this.getkatalogRef();
+            const q = query(katalogRef, orderBy('updatedAt', 'desc'));
             const snapshot = await getDocs(q);
             return snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data()
-            } as Todo));
+            } as katalog));
         } catch (error) {
-            console.error('Error Get Todos:', error);
+            console.error('Error Get katalogs:', error);
             throw error;
         }
     },
 
 		// update
-    async updateTodo(id: string, todo: Partial<Todo>) {
+    async updatekatalog(id: string, katalog: Partial<katalog>) {
         try {
-            const todoRef = this.getTodoRef();
-            const docRef = doc(todoRef, id);
+            const katalogRef = this.getkatalogRef();
+            const docRef = doc(katalogRef, id);
             await updateDoc(docRef, {
-                ...todo,
+                ...katalog,
                 updatedAt: Timestamp.now()
             });
         } catch (error) {
-            console.error('Error Update Todo:', error);
+            console.error('Error Update katalog:', error);
             throw error;
         }
     },
 
 		// delete
-    async deleteTodo(id: string) {
+    async deletekatalog(id: string) {
         try {
-            const todoRef = this.getTodoRef();
-            const docRef = doc(todoRef, id);
+            const katalogRef = this.getkatalogRef();
+            const docRef = doc(katalogRef, id);
             await deleteDoc(docRef);
         } catch (error) {
-            console.error('Error Delete Todo:', error);
+            console.error('Error Delete katalog:', error);
             throw error;
         }
     },
@@ -94,8 +94,8 @@ export const firestoreService = {
 		// update status
     async updateStatus(id: string, status: boolean) {
         try {
-            const todoRef = this.getTodoRef();
-            const docRef = doc(todoRef, id);
+            const katalogRef = this.getkatalogRef();
+            const docRef = doc(katalogRef, id);
             await updateDoc(docRef, { status: status, updatedAt: Timestamp.now() });
         } catch (error) {
             console.error('Error Update Status:', error);

@@ -7,12 +7,13 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBb8zN3FLBN6gqRh4nr1O80ztVfGkgxgUQ",
-  authDomain: "vue-firebase-3c264.firebaseapp.com",
-  projectId: "vue-firebase-3c264",
-  storageBucket: "vue-firebase-3c264.firebasestorage.app",
-  messagingSenderId: "221664946336",
-  appId: "1:221664946336:web:1013e14a1a7ad9472b81c5"
+  apiKey: "AIzaSyAP8OwEFutkg_nLznxUgA7JnsMdkeZpNu0",
+  authDomain: "toy-story-3130a.firebaseapp.com",
+  projectId: "toy-story-3130a",
+  storageBucket: "toy-story-3130a.firebasestorage.app",
+  messagingSenderId: "1089800573904",
+  appId: "1:1089800573904:web:90aa2f72778fc9a1111fd5",
+  measurementId: "G-NYZF64X8F9"
 };
 
 // Initialize Firebase
